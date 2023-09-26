@@ -9,7 +9,7 @@ with base as (
 
     select
         {% set default_cols = adapter.get_columns_in_relation(ref('stg_hubspot__engagement_task_tmp')) %}
-        {% set new_cols = fivetran_utils.remove_prefix_from_columns(columns=default_cols, 
+        {% set new_cols = fivetran_utils.remove_prefix_from_columns(columns=remove_column_conflict(columns=default_cols, conflict_pair=('property_hs_task_type', 'task_type'), keep='property_hs_task_type'), 
             prefix='property_hs_',exclude=get_macro_columns(get_engagement_task_columns())) %}
         {{
             fivetran_utils.fill_staging_columns(source_columns=default_cols,
